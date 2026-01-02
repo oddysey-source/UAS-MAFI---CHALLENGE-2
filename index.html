@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Family Tree</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/treant-js/1.0/Treant.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/treant-js/1.0/vendor/perfect-scrollbar/perfect-scrollbar.css" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <h1 style="text-align: center;">Family Tree</h1>
+
+      <nav class="tab-nav">
+        <button data-page="input">Input Anggota</button>
+        <button data-page="visual">Visualisasi Tree</button>
+        <button data-page="panduan">Panduan Aplikasi</button>
+        <button data-page="algoritma">Algoritma Program</button>
+        <button data-page="struktur">Struktur Data</button>
+        <button data-page="konsep">Konsep MTK</button>
+        <button data-page="about">About Me</button>
+      </nav>
+    </header>
+
+    <main>
+      <!-- Input -->
+      <section id="input">
+        <h2>Input Anggota Keluarga</h2>
+        <p>Data Anggota Keluarga</p>
+        <ul>
+          <li>Nabi Muhammad ﷺ</li>
+          <li>Abdullah (Ayah)</li>
+          <li>Aminah binti Wahb (Ibu)</li>
+          <li>Abdul Muthalib (Kakek)</li>
+          <li>Fatimah binti Amr (Nenek)</li>
+          <li>Hasyim (Buyut)</li>
+          <li>Salma binti Amr (Buyut)</li>
+        </ul>
+        <p>Anggota selanjutnya, dapat diinput menggunakan form.</p>
+        
+        <div class="card">
+          <h3>Tambah Anggota Keluarga</h3>
+          <form id="familyForm">
+            <label>Nama Anggota</label><br />
+            <input type="text" id="name" required /><br /><br />
+            <label>Peran</label><br />
+            <input
+            type="text"
+            id="role"
+            placeholder="Ayah / Ibu / Paman / Anak"
+            required
+            /><br /><br />
+            <label>Nama Orang Tua</label><br />
+            <input
+            type="text"
+            id="parent"
+            placeholder="Contoh: Abdullah"
+            required
+            /><br /><br />
+            <label>Foto Anggota (.jpg max 100KB)</label><br />
+            <input
+            type="file"
+            id="photo"
+            accept=".jpg"
+            required
+            /><br /><br />
+
+            <button type="submit">Tambah Node</button>
+          </form>
+      </div>
+      </section>
+
+      <!-- Visualisasi -->
+      <section id="visual">
+        <h2>Visualisasi Family Tree</h2>
+        <p>Depth dihitung dari root sebagai level 0</p>
+        <div class="tree-info">
+          <strong>Jumlah Node:</strong> <span id="nodeCount">0</span> |
+          <strong>Kedalaman Tree:</strong> <span id="treeDepth">0</span>
+        </div>
+
+        <div id="treeContainer" class="chart"></div>
+      </section>
+
+      <!-- Panduan -->
+      <section id="panduan">
+  <h2>Panduan Aplikasi</h2>
+
+  <ol>
+    <li>
+      <strong>Halaman Awal Aplikasi</strong><br />
+      Saat aplikasi dibuka, pengguna akan diarahkan ke halaman <em>About Me</em>
+      yang berisi informasi pembuat aplikasi dan deskripsi singkat project UAS.
+      Navigasi menu tersedia di bagian atas untuk berpindah halaman.
+    </li>
+
+    <li>
+      <strong>Menu Input Anggota</strong><br />
+      Menu ini digunakan untuk melihat data awal anggota keluarga dan
+      menambahkan anggota keluarga baru ke dalam struktur tree.
+      <br /><br />
+      Langkah menambahkan anggota keluarga:
+      <ul>
+        <li>Masukkan <strong>Nama Anggota</strong>.</li>
+        <li>Masukkan <strong>Peran</strong> (Ayah, Ibu, Paman, Anak, dll).</li>
+        <li>Masukkan <strong>Nama Orang Tua</strong> sesuai dengan node yang sudah ada.</li>
+        <li>
+          Upload <strong>foto anggota</strong> dengan ketentuan:
+          <ul>
+            <li>Format file <strong>.jpg</strong></li>
+            <li>Ukuran maksimal <strong>100 KB</strong></li>
+            <li>Upload bersifat <strong>wajib</strong></li>
+          </ul>
+        </li>
+        <li>Klik tombol <strong>Tambah Node</strong>.</li>
+      </ul>
+      Jika parent ditemukan, node baru akan langsung ditambahkan ke dalam tree.
+    </li>
+
+    <li>
+      <strong>Menu Visualisasi Tree</strong><br />
+      Menu ini menampilkan struktur silsilah keluarga dalam bentuk pohon (tree).
+      Informasi yang ditampilkan:
+      <ul>
+        <li><strong>Jumlah Node</strong>: total anggota keluarga saat ini.</li>
+        <li><strong>Kedalaman Tree</strong>: tingkat kedalaman maksimum tree.</li>
+      </ul>
+
+      Perbedaan warna node:
+      <ul>
+        <li><strong>Abu-abu</strong> : Root visual (Nabi Muhammad ﷺ)</li>
+        <li><strong>Biru</strong> : Node parent (memiliki anak)</li>
+        <li><strong>Hijau</strong> : Node leaf (tidak memiliki anak)</li>
+      </ul>
+
+      Setiap node dilengkapi dengan:
+      <ul>
+        <li>Tombol <strong>Edit (✏️)</strong> untuk mengubah nama dan peran.</li>
+        <li>
+          Tombol <strong>Hapus (🗑️)</strong> untuk menghapus node beserta
+          seluruh turunannya, kecuali root data dan root visual.
+        </li>
+      </ul>
+    </li>
+
+    <li>
+      <strong>Penyimpanan Data</strong><br />
+      Seluruh perubahan data (tambah, edit, hapus node) akan
+      disimpan secara otomatis ke dalam <em>Local Storage</em> browser.
+      Data akan tetap tersimpan meskipun halaman di-refresh.
+    </li>
+
+    <li>
+      <strong>Menu Algoritma Program</strong><br />
+      Menu ini berisi pseudocode dan penjelasan algoritma yang digunakan,
+      seperti traversal tree, penambahan node, penghitungan jumlah node,
+      penghitungan kedalaman tree, serta penghapusan node.
+    </li>
+
+    <li>
+      <strong>Menu Struktur Data</strong><br />
+      Menu ini menampilkan representasi struktur tree dalam bentuk objek JSON
+      yang menggambarkan relasi parent–child pada silsilah keluarga.
+    </li>
+
+    <li>
+      <strong>Menu Konsep Matematika Informatika</strong><br />
+      Menu ini menjelaskan konsep-konsep Matematika Informatika yang digunakan,
+      seperti struktur data tree, relasi parent–child, depth, traversal,
+      serta kompleksitas waktu algoritma.
+    </li>
+
+    <li>
+      <strong>Menu About Me</strong><br />
+      Menu ini berisi informasi mahasiswa, mata kuliah, dosen pengampu,
+      dan tujuan pembuatan aplikasi sebagai project UAS.
+    </li>
+  </ol>
+
+  <p>
+    <em>
+      Catatan: Walaupun secara struktur data root tree berada pada leluhur tertua,
+      aplikasi ini menetapkan Nabi Muhammad ﷺ sebagai root visual untuk
+      keperluan visualisasi tanpa mempengaruhi struktur data maupun algoritma.
+    </em>
+  </p>
+</section>
+
+      <!-- Algoritma -->
+      <section id="algoritma">
+        <h2>Algoritma</h2>
+        <hr />
+        Algoritma Pseudocode:
+        <pre>
+START
+
+Load familyTree from LocalStorage
+IF familyTree == NULL THEN
+  Initialize default familyTree
+END IF
+
+FUNCTION renderTree(node):
+  Display node
+  FOR EACH child IN node.children DO
+    renderTree(child)
+  END FOR
+END FUNCTION
+
+FUNCTION addNode(currentNode, parentName, newNode):
+  IF currentNode.name == parentName THEN
+    currentNode.children.push(newNode)
+    RETURN true
+  END IF
+
+  FOR EACH child IN currentNode.children DO
+    IF addNode(child, parentName, newNode) THEN
+      RETURN true
+    END IF
+  END FOR
+  RETURN false
+END FUNCTION
+
+FUNCTION countNodes(node):
+  total ← 1
+  FOR EACH child IN node.children DO
+    total ← total + countNodes(child)
+  END FOR
+  RETURN total
+END FUNCTION
+
+FUNCTION getDepth(node):
+  IF node.children is empty THEN
+    RETURN 1
+  END IF
+  RETURN 1 + MAX(getDepth(child))
+END FUNCTION
+
+IF user edits node THEN
+  Update name and role
+  Save to LocalStorage
+END IF
+
+IF user deletes node AND node ≠ root THEN
+  Remove node and its children
+  Save to LocalStorage
+END IF
+
+END
+</pre>
+      </section>
+
+      <!-- Struktur Data -->
+      <section id="struktur">
+        <h2>Representasi Struktur Data</h2>
+
+        <pre>
+let familyTree = {
+  id: "buyut-hasyim",
+  name: "Hasyim",
+  role: "Buyut",
+  image: "images/buyut.jpg",
+  children: [
+    {
+      id: "istri-buyut-salma",
+      name: "Salma binti Amr",
+      role: "Buyut",
+      image: "images/istribuyut.jpg",
+      children: []
+    },
+    {
+      id: "kakek-abdul-muthalib",
+      name: "Abdul Muthalib",
+      role: "Kakek",
+      image: "images/kakek.jpg",
+      children: [
+        {
+          id: "nenek-fatimah",
+          name: "Fatimah binti Amr",
+          role: "Nenek",
+          image: "images/nenek.jpg",
+          children: []
+        },
+        {
+          id: "ayah-abdullah",
+          name: "Abdullah",
+          role: "Ayah",
+          image: "images/ayah.jpg",
+          children: [
+            {
+              id: "ibu-aminah",
+              name: "Aminah binti Wahb",
+              role: "Ibu",
+              image: "images/ibu.jpg",
+              children: []
+            },
+            {
+              id: "root-nabi",
+              name: "Nabi Muhammad ﷺ",
+              role: "Anak",
+              image: "images/nabi.jpg",
+              children: []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+};
+        </pre>
+        
+        <p>
+          Struktur di atas merepresentasikan hubungan parent–child dalam bentuk
+          pohon (tree).
+        </p>
+      </section>
+
+      <!-- Konsep -->
+      <section id="konsep">
+        <h2>Konsep Matematika Informatika</h2>
+        
+        <ul>
+          <li>Tree (struktur pohon)</li>
+          <p>Aplikasi ini menerapkan konsep struktur data tree, di mana setiap node
+          merepresentasikan satu anggota keluarga.</p>
+          <li>Relasi parent–child</li>
+          <p>
+            Relasi parent–child digunakan untuk membangun hierarki silsilah keluarga
+            dalam bentuk tree murni, di mana setiap node hanya memiliki satu parent
+            untuk menjaga kesederhanaan struktur data.
+          </p>
+
+          <li>Depth (kedalaman node)</li>
+          <p>
+            Konsep depth dan height digunakan dalam aplikasi ini untuk menghitung
+            kedalaman node serta kedalaman maksimum tree. Selain itu, jumlah node
+            ihitung secara rekursif untuk mengetahui kompleksitas struktur data.
+          </p>
+          <li>Traversal konseptual</li>
+          <p>
+            Traversal konseptual diterapkan dalam aplikasi ini ketika sistem menelusuri
+            setiap node pada struktur tree untuk berbagai keperluan, seperti menghitung
+            jumlah node, menentukan kedalaman tree, serta mencari, mengedit, dan menghapus
+            anggota keluarga.
+          </p>
+          <li><strong>Keterbatasan Model Tree</strong></li>
+          <p>
+            Struktur data tree yang digunakan dalam aplikasi ini merupakan tree murni
+            (single-parent tree). Konsekuensinya, setiap node hanya memiliki satu parent.
+            Relasi pasangan (suami–istri) tidak direpresentasikan secara horizontal,
+            melainkan dimasukkan sebagai child untuk menjaga konsistensi algoritma traversal
+            dan kompatibilitas dengan visualisasi tree.
+          </p>
+
+          <li><strong>Alasan Pemilihan Struktur Tree</strong></li>
+          <p>
+            Struktur tree dipilih karena mudah dipahami, mendukung traversal rekursif,
+            dan sesuai dengan konsep dasar struktur data yang dipelajari dalam
+            Matematika Informatika. Struktur lain seperti graph atau DAG tidak digunakan
+            karena akan meningkatkan kompleksitas algoritma dan visualisasi.
+          </p>
+
+        </ul>
+      </section>
+
+      <!-- About -->
+      <section id="about" class="about-section">
+        <h2>About </h2>
+
+        <p class="about-desc">
+          Aplikasi ini dibuat sebagai project UAS Matematika Informatika untuk
+          memodelkan struktur data tree menggunakan studi kasus silsilah keluarga
+          Nabi Muhammad ﷺ.
+        </p>
+
+        <div class="profile-main">
+          <img src="images/foto-saya.jpg" alt="Foto Mahasiswa" class="profile-photo" />
+          <h3>Karin Naswa Syaiba</h3>
+          <p class="subtitle">Mahasiswa Sistem Informasi</p>
+        </div>
+
+        <div class="about-grid">
+           <div class="about-card">
+            <h4>👩‍🎓 Data Mahasiswa</h4>
+            <ul>
+              <li><strong>Nama:</strong> Karin Naswa Syaiba</li>
+              <li><strong>NIM:</strong> 252505017</li>
+              <li><strong>Kelas:</strong> SI/1/R</li>
+              <li><strong>Mata Kuliah:</strong> Matematika Informatika</li>
+              <li><strong>Level Challenge:</strong> Level 9</li>
+            </ul>
+          </div>
+
+           <div class="about-card">
+            <h4>🧑‍💼 Dosen Pengampu</h4>
+            <ul>
+              <li><strong>Nama:</strong> Iin Sholihin, M.Kom</li>
+              <li><strong>NIDN:</strong> 5943765666130312</li>
+              <li>
+                <strong>Website:</strong>
+                <a href="https://kangsolihin.web.id" target="_blank">
+                  kangsolihin.web.id
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer>UAS Matematika Informatika © 2025</footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.3.0/raphael.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/treant-js/1.0/Treant.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
+
