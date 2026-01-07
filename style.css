@@ -225,26 +225,6 @@ svg {
 }
 
 .treant-node {
-  position: relative; /* WAJIB */
-}
-
-.node-actions {
-  position: absolute;
-  top: 6px;
-  left: 6px;
-  right: 6px;
-  display: flex;
-  justify-content: space-between;
-}
-
-.node-actions button {
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.treant-node {
   position: relative;
   padding-top: 30px; 
 }
@@ -267,6 +247,7 @@ svg {
   font-size: 12px;
   display: flex;
   align-items: center;
+  background: transparent;
   justify-content: center;
 }
 
@@ -308,3 +289,4 @@ svg {
     padding: 10px;
   }
 }
+
